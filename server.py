@@ -8,7 +8,7 @@ CORS(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return "Hello EORLD????"
 
 @app.route('/api/youtube')
 def video():
@@ -23,12 +23,14 @@ def video():
             },
             "sources": []
         }
-        videos = yt.streams.filter(progressive=True)
+        videos = yt.streams.filter(progressive=True).order_by('resolution').desc()
         for v in videos:
             video['sources'].append({
                 "url":v.url,
-                "size":v.filesize,
-                "resolution":v.resolution
+                "size":v.filesize_mb,
+                "resolution":v.resolution,
+                "type":v.mime_type,
+                "bool":v.includes_audio_track
             })
         return video
 
